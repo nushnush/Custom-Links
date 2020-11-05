@@ -58,9 +58,8 @@ public Action Cmd_Link(int client, int args)
 {
     char sCmd[64], sLink[512];
     GetCmdArg(0, sCmd, sizeof(sCmd));
-
     links.GetString(cmds.FindString(sCmd), sLink, sizeof(sLink));
-    ShowMOTDPanel(client, sCmd, sLink, MOTDPANEL_TYPE_URL);
+    ShowLink(client, sLink);
     return Plugin_Handled;
 }
 
@@ -79,4 +78,14 @@ public Action Cmd_Reload(int client, int args)
     }
     
     return Plugin_Handled;
+}
+
+void ShowLink(const int client, const char[] link)
+{
+    KeyValues kv = new KeyValues("data");
+    kv.SetString("title", "Link");
+    kv.SetNum("type", MOTDPANEL_TYPE_URL);
+    kv.SetString("msg", link);
+    ShowVGUIPanel(client, "info", kv, true);
+    delete kv;
 }
